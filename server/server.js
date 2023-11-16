@@ -3,9 +3,14 @@ const mysql = require('mysql');
 const express = require('express');
 const compression = require('compression');
 const pidusage = require('pidusage');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const cors = require('cors');
+
 
 const app = express();
 const port = 8080;
+app.use(cors());
 
 const pool = mysql.createPool({
   connectionLimit: 10,
@@ -37,18 +42,15 @@ setInterval(async () => {
       getUsage('cpu'),
       getUsage('memory')
     ]);
-
-    console.log('CPU Usage:', cpuUsage.toFixed(2) + '%');
-    console.log('Script Memory Usage:', formatBytes(scriptMemoryUsage));
-    console.log('Average Response Time:', avgResponseTime.toFixed(2) + 'ms');
-
+    process.stdout.write('\r'); 
+    process.stdout.write('CPU Usage: ' + cpuUsage.toFixed(2) + '%'+' | Script Memory Usage: ' + formatBytes(scriptMemoryUsage)+' | Average Response Time: ' + avgResponseTime.toFixed(2) + 'ms');
   } catch (error) {
     console.error('Error during monitoring:', error);
   }
 }, 1000);
 
-app.use(compression());
 
+app.use(compression());
 app.get('/data', async (req, res) => {
   try {
     requestCount += 1;
@@ -117,3 +119,66 @@ function formatBytes(bytes) {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return Math.round(bytes / Math.pow(k, i)) + ' ' + sizes[i];
 }
+
+app.use(express.json());
+var codeforreg = "123456789";
+app.post('/register', (req, res) => {
+  const username = req.body.username;
+  const userpassword = req.body.userpassword;
+  const code = req.body.code;
+  pool.query(
+    "SELECT * FROM users WHERE username = ?",
+    [username],
+    (selectErr, selectResult) => {
+      if (selectErr) {
+        res.send('Szerver hiba!');
+      } else {
+        if (selectResult.length > 0) {
+          res.send('A felhasználó már létezik!!');
+        } else {
+          if (code == codeforreg) {
+            pool.query(
+              "INSERT INTO users (username, userpassword) VALUES (?, ?)",
+              [username, userpassword],
+              (insertErr, insertResult) => {
+                if (insertErr) {
+                  res.send('Szerver hiba!');
+                } else {
+                  res.send('Sikeres regisztráció!');
+                }
+              }
+            );
+          } else {
+            res.send('Helytelen kód!');
+          }
+        }
+      }
+    }
+  );
+});
+
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('/public'));
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+    pool.query(
+      'SELECT * FROM users WHERE username = ? AND userpassword = ?',
+      [username, password],
+      (err, results) => {
+        if (results.length > 0) {
+          fs.readFile(__dirname + '/dashboard.html', 'utf8', (err, data) => {
+            if (err) {
+              console.error('Error reading dashboard.html:', err);
+            } else {
+              res.send(data);
+            }
+          });
+        } else {
+          res.send('Invalid login');
+        }
+      }
+    );
+});
+

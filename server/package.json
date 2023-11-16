@@ -1,7 +1,10 @@
 {
   "dependencies": {
+    "body-parser": "^1.20.2",
     "compression": "^1.7.4",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
     "mysql": "^2.18.1",
     "pidusage": "^3.0.2"
   }
