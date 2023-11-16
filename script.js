@@ -80,3 +80,10 @@ function ellenorzes(){
     }
     document.getElementById("elabel").innerText = talalat+" / "+db;
 }
+
+const myModal = document.getElementById('myModal')
+const myInput = document.getElementById('myInput')
+
+myModal.addEventListener('shown.bs.modal', () => {
+  myInput.focus()
+})
