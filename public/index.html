@@ -24,22 +24,21 @@
                     <div class="main">  	
                         <input type="checkbox" id="chk" aria-hidden="true">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="login">
+                            <form>
+                                <label for="chk" class="reg" aria-hidden="true">Bejelentkezés</label>
+                                <input type="text" id="logfelh" name="user" placeholder="Felhaszálónév" required="">
+                                <input type="password" id="logjelsz" name="pswd" placeholder="Jelszó" required="">
+                                <button type="button" class="logregButt" id="login" onclick="flogin()">Bejelentkezés</button>
+                            </form>
+                        </div>
                             <div class="signup">
                                 <form>
                                     <label for="chk" class="reg" aria-hidden="true">Regisztrálás</label>
                                     <input type="text" id="regfelnev" name="user" placeholder="Felhaszálónév">
                                     <input type="password" id="regjelsz" name="pswd" placeholder="Jelszó">
                                     <input type="password" id="kod" name="kod" placeholder="Kód">
-                                    <button type="button" id="regisztral" onclick="fregister()" disabled>Regisztrálás</button>
-                                </form>
-                            </div>
-                
-                            <div class="login">
-                                <form>
-                                    <label for="chk" class="reg" aria-hidden="true">Bejelentkezés</label>
-                                    <input type="text" id="logfelh" name="user" placeholder="Felhaszálónév" required="">
-                                    <input type="password" id="logjelsz" name="pswd" placeholder="Jelszó" required="">
-                                    <button type="button" id="login" onclick="flogin()" disabled>Bejelentkezés</button>
+                                    <button type="button" class="logregButt" id="regisztral" onclick="fregister()" disabled>Regisztrálás</button>
                                 </form>
                             </div>
                     </div>
