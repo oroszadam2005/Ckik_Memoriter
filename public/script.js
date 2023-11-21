@@ -204,8 +204,19 @@ function flogin(){
         if (data == 'Invalid login') {
         alert('Helytelen felhasználónév vagy jelszó!');
         } else {
-        document.body.innerHTML = data;
+            document.body.innerHTML = data;
+            loadtable();
+
         }
     })
     .catch(error => console.error('Error:', error));
+}
+
+function loadtable(){
+    var table = document.getElementById("dbmanager");
+    fetchAndUseData().then(() => {
+        for (let index = 0; index < data.length; index++) {
+            table.innerHTML += "<tr><td>"+(index+1)+"</td><td>"+data[index].Kolto+"</td><td>"+data[index].Cim+"</td><td>"+data[index].Ev+"</td><td><button type='button' class='button' onclick='elonezet("+(index+1)+")'>Előnézet</button><button type='button' class='button' onclick='torles("+(index+1)+")'>Törlés</button></td></tr>";
+        }
+    });
 }

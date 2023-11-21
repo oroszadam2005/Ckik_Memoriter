@@ -85,28 +85,6 @@
     position: absolute;
     overflow: hidden;
 }
-
-.inputfile {
-	width: 0.1px;
-	height: 0.1px;
-	opacity: 0;
-	overflow: hidden;
-	position: absolute;
-	z-index: -1;
-}
-.inputfile + label {
-  color: rgb(0, 0, 0);
-  background-color: rgb(255, 255, 255);
-  display: inline-block;
-}
-
-.inputfile:focus + label,
-.inputfile + label:hover {
-  background-color: rgb(59, 59, 59);
-}
-.inputfile + label {
-	cursor: pointer; /* "hand" cursor */
-}
 ::placeholder {
     text-align: center; 
  }
@@ -184,6 +162,7 @@ input{
 	border: none;
 	outline: none;
 	border-radius: 5px;
+  text-align: center;
 }
 .logregButt{
 	width: 60%;
@@ -237,4 +216,25 @@ input{
 }
 #chk:checked ~ .login label{
 	transform: scale(.6);
+}
+
+
+#dbmanager{
+  margin: auto;
+  color: white;
+  text-align: center;
+  border: 2px solid red;
+}
+
+#dbmanager tr{
+  border: 2px solid red;
+}
+#dbmanager td,#dbmanager th{
+  border: 2px solid red;
+  font-size: 20px;
+  width: 15vw;
+}
+
+#dbmanager tr{
+  border: 2px solid red;
 }
