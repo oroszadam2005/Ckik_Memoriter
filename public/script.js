@@ -68,7 +68,7 @@ function kiszed(kivalasztott){
     }
     document.getElementById("vers").innerHTML = szavak.join(' ').toString();
 }
-function ellenorzes(){
+function Ellenorzes(){
     document.getElementById("ebtn").disabled = true;
     document.getElementById("db").disabled = false;
     var db = document.getElementById("db").value;var talalat = 0;
@@ -213,10 +213,72 @@ function flogin(){
 }
 
 function loadtable(){
-    var table = document.getElementById("dbmanager");
+    var table = document.getElementById("data");
+    table.innerHTML = "";
     fetchAndUseData().then(() => {
         for (let index = 0; index < data.length; index++) {
-            table.innerHTML += "<tr><td>"+(index+1)+"</td><td>"+data[index].Kolto+"</td><td>"+data[index].Cim+"</td><td>"+data[index].Ev+"</td><td><button type='button' class='button' onclick='elonezet("+(index+1)+")'>Előnézet</button><button type='button' class='button' onclick='torles("+(index+1)+")'>Törlés</button></td></tr>";
+            table.innerHTML += "<tr><td>"+(data[index].id)+"</td><td>"+data[index].Kolto+"</td><td>"+data[index].Cim+"</td><td>"+data[index].Ev+"</td><td><button type='button' class='button' onclick='elonezet("+(index)+")'>Előnézet</button><button type='button' class='button' id='btn"+(data[index].id)+"'onclick='torles("+(data[index].id)+")'>Törlés</button></td></tr>";
         }
     });
+}
+
+function elonezet(index){
+    alert(data[index].Szoveg);
+}
+
+var del = [];
+function torles(id){
+    var btn = document.getElementById("btn"+id);
+    if (!del.includes(id)) {
+        btn.innerText = "Megerősítés";
+        del.push(id);
+        torlesmegerosites(id);
+    }else{
+        fetch('http://localhost:8080/dbmgmt', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `type=delete&id=${id}`,
+          }).then(response => response.text())
+            .then(res => {
+                if(res == "Sikeres művelet!"){
+                    setTimeout(() => {
+                        loadtable();
+                    }, 1000);
+                    del = [];
+                }else{
+                    alert(res);
+                }    
+            });
+
+    }
+}
+function torlesmegerosites(id){
+    var btn = document.getElementById("btn"+id);
+    setTimeout(function (){
+        del = del.filter(x => x != id);
+        btn.innerText = "Törlés";
+    },2000)
+}
+
+
+function newdata(id){
+    fetch('http://localhost:8080/dbmgmt', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `type=delete&id=${id}`,
+        }).then(response => response.text())
+        .then(res => {
+            if(res == "Sikeres művelet!"){
+                setTimeout(() => {
+                    loadtable();
+                }, 1000);
+                del = [];
+            }else{
+                alert(res);
+            }    
+        });
 }

@@ -1,20 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
-<body>
-    <button type='button' class='button'>Új</button>
-    <table id="dbmanager">
-        <tr>
-            <th>ID</th>
-            <th>Költő</th>
-            <th>Cím</th>
-            <th>Év</th>
-            <th>Műveletek</th>
-        </tr>
-    </table>
-</body>
-</html>
+<div>
+    <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#logreg">
+        Új
+    </button>
+    <div class="modal fade" id="logreg" tabindex="-1" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="main">  	
+                    <input type="checkbox" id="chk" aria-hidden="true">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="form-group">
+                        <label for="osztaly">Évfolyam</label>
+                        <select class="form-control" id="osztaly">
+                          <option>9. Osztály</option>
+                          <option>10. Osztály</option>
+                          <option>11. Osztály</option>
+                          <option>12. Osztály</option>
+                        </select>
+                      </div>
+                    <input type="text" name="ev" id="ev" placeholder="Év">
+                    <input type="text" name="kolto" id="kolt" placeholder="Költő">
+                    <input type="text" name="cim" id="cim" placeholder="Cím">
+                    <textarea name="vers" id="verssubmit" cols="30" rows="10" placeholder="Vers Szöveg" style="resize: none;"></textarea>
+                    <button id="submitButt" onclick="newdata()">Beküld</button>
+        </div>
+        </div>
+    </div>
+</div>
+<button type='button' class='button' onclick="loadtable()">Frissítés</button>
+<table id="dbmanager">
+    <tr>
+        <th>ID</th>
+        <th>Költő</th>
+        <th>Cím</th>
+        <th>Év</th>
+        <th>Műveletek</th>
+    </tr>
+</table>
+<table id="data"></table>

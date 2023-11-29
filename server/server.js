@@ -6,8 +6,6 @@ const pidusage = require('pidusage');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors');
-
-
 const app = express();
 const port = 8080;
 app.use(cors());
@@ -23,18 +21,26 @@ const pool = mysql.createPool({
 let requestCount = 0;
 let totalResponseTime = 0;
 let avgResponseTime = 0;
-let serverData = "Internal Server Error";
+let serverData = "Loading";
 
-setInterval(async () => {
+async() => {await update();};
+async function update() {
   try {
     const start = Date.now();
     serverData = await fetchData();
     totalResponseTime += Date.now() - start;
+    console.log('\nData updated successfully!');
+  
   } catch (err) {
-    console.error('Error fetching data:', err);
-    serverData = "Internal Server Error";
+    console.error('Error in update function:', err);
   }
-}, 10000);
+}
+(async () => {
+  setInterval(async () => {
+    await update();
+  }, 10000);
+})();
+
 
 setInterval(async () => {
   try {
@@ -43,7 +49,7 @@ setInterval(async () => {
       getUsage('memory')
     ]);
     process.stdout.write('\r'); 
-    process.stdout.write('CPU Usage: ' + cpuUsage.toFixed(2) + '%'+' | Script Memory Usage: ' + formatBytes(scriptMemoryUsage)+' | Average Response Time: ' + avgResponseTime.toFixed(2) + 'ms');
+    process.stdout.write('CPU Usage: ' + cpuUsage.toFixed(2) + '%'+' | Script Memory Usage: ' + formatBytes(scriptMemoryUsage)+' | Average Response Time: ' + avgResponseTime.toFixed(2));
   } catch (error) {
     console.error('Error during monitoring:', error);
   }
@@ -182,3 +188,22 @@ app.post('/login', (req, res) => {
     );
 });
 
+
+app.post('/dbmgmt', (req, res) => {
+  const { type, id } = req.body;
+  switch (type) {
+    case "delete":
+      pool.query("DELETE FROM versek WHERE id = ?", [id], function (err, result) {
+        if (err) {
+          res.send("Hiba történt a művelet során.");
+        } else {
+          async() => {await update();};
+          res.send("Sikeres művelet!");
+        }
+      });
+      break;
+    default:
+      res.send("Érvénytelen művelettípus.");
+      break;
+  }
+});
