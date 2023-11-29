@@ -64,7 +64,7 @@ function kiszed(kivalasztott){
     }
     sort(rnds,szavakki,db);
     for (let index = 0; index < db; index++) {
-        szavak[rnds[index]] = "<input type=text placeholder="+(index+1)+" id="+index+"></input>";     
+        szavak[rnds[index]] = "<input type=text placeholder="+(index+1)+" id="+index+" style='width:"+szavakki[index].length*15+"px !important'></input>";     
     }
     document.getElementById("vers").innerHTML = szavak.join(' ').toString();
 }
@@ -282,3 +282,9 @@ function newdata(id){
             }    
         });
 }
+let input = document.getElementById('logjelsz');
+input.addEventListener("keypress", function (event) {
+    if (event.keyCode == 13) {
+        document.getElementById('login').click()
+    }
+ });
