@@ -277,3 +277,33 @@ input{
 #submitButt:hover{
   background: #6d44b8;
 }
+
+a:hover{
+  cursor: pointer;
+}
+.navbar{
+  border-radius: 0px 0px 100px 100px;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+.nav-item{
+  font-family: 'Jost', sans-serif;
+  font-size: 1em;
+	font-weight: bold;
+  border-radius: 100px;
+  color: #6d44b877;
+}
+.nav-item:hover{
+  transition: .3s ease-in;
+  background-color: #7c5bb8;
+  color: #ffffff;
+	display: flex;
+	font-weight: bold; 
+}
+.navbar-brand{
+  padding-top: 10px;
+  font-family: 'Jost', sans-serif;
+  font-size: 1em;
+	font-weight: bold;
+  color: #6d44b8;
+}
